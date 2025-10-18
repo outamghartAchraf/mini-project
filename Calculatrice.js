@@ -1,12 +1,70 @@
+var prompt = require('prompt-sync')();
 
-const prompt = require('prompt-sync')();  
+/* ┌───────────────────────────────┐
+   │    MINI PROJECT CALCULATOR 🖩  │
+   └───────────────────────────────┘ */
 
 let history = [];
+let archif;
 
-while (true) {
+// ──────────────────────────────
+// FUNCTIONS
+// ──────────────────────────────
+const Addition = (number1, number2) => {
+    let somme = `La Somme : ${number1} + ${number2} = ${number1 + number2}`;
+    console.log(somme);
+    archif = somme;
+};
 
-   
-    let opt = prompt(
+const Multiplication = (number1, number2) => {
+    let multiplication = `Multiplication : ${number1} * ${number2} = ${number1 * number2}`;
+    console.log(multiplication);
+    archif = multiplication;
+};
+
+const Soustraction = (number1, number2) => {
+    let soustraction = `Soustraction : ${number1} - ${number2} = ${number1 - number2}`;
+    console.log(soustraction);
+    archif = soustraction;
+};
+
+const Division = (number1, number2) => {
+    if (number2 !== 0) {
+        let division = `Division : ${number1} / ${number2} = ${number1 / number2}`;
+        console.log(division);
+        archif = division;
+    } else {
+        console.log('Impossible de diviser par 0');
+    }
+};
+
+const Puissance = (number1, number2) => {
+    let puissance = `La Puissance : ${number1} ^ ${number2} = ${number1 ** number2}`;
+    console.log(puissance);
+    archif = puissance;
+};
+
+const Factorielle = (number1) => {
+    let f = 1;
+    for (let i = 1; i <= number1; ++i) {
+        f *= i;
+    }
+    let result = `Factorielle de ${number1} = ${f}`;
+    console.log(result);
+    archif = result;
+};
+
+const Racine_caree = (number1) => {
+    let racin = `La racine carrée de ${number1} = ${Math.sqrt(number1)}`;
+    console.log(racin);
+    archif = racin;
+};
+
+// ──────────────────────────────
+// MENU FUNCTION
+// ──────────────────────────────
+function menuC() {
+    console.log(
         '┌─────────────────────────────┐\n' +
         '│   SELECT YOUR OPERATOR      │\n' +
         '├─────────────────────────────┤\n' +
@@ -23,14 +81,24 @@ while (true) {
         '→ Your choice: '
     );
 
-    // Exit
-    if (opt === '0') {
+    return parseInt(prompt());
+}
+
+// ──────────────────────────────
+// MAIN LOOP
+// ──────────────────────────────
+let menu;
+do {
+    menu = menuC();
+
+// exit program    
+    if (menu === 0) {
         console.log("👋 GOOD BYE !");
-        break
+        break;
     }
 
     // Historique
-    if (opt === '8') {
+    if (menu === 8) {
         console.log('Historique of calcul:');
         if (history.length === 0) {
             console.log('Aucun calcul');
@@ -40,104 +108,56 @@ while (true) {
         continue;
     }
 
-     
     let number1, number2;
-    if (['1','2','3','4','5','6','7'].includes(opt)) {
+
+    if ([1, 2, 3, 4, 5, 6, 7].includes(menu)) {
         number1 = Number(prompt('Enter number 1: '));
-        if (['1','2','3','4','5'].includes(opt)) {
+        if (isNaN(number1)) {
+            console.log('Require valid number');
+            continue;
+        }
+
+        // Only ask number2 for operations that need it
+        if ([1, 2, 3, 4, 5].includes(menu)) {
             number2 = Number(prompt('Enter number 2: '));
+            if (isNaN(number2)) {
+                console.log('Require valid number');
+                continue;
+            }
         }
+    } else {
+        console.log('Operator not found!');
+        continue;
     }
-
-    if(isNaN(number1) && isNaN(number2)){
-        console.log('require valid number')
-    }
-
-    let archif;
-
-    // ──────────────────────────────
-    // FUNCTIONS
-    // ──────────────────────────────
-    const Addition = () => {
-        let somme = `La Somme : ${number1} + ${number2} = ${number1 + number2}`;
-        console.log(somme);
-        archif = somme;
-    };
-
-    const Soustraction = () => {
-        let soustraction = `Soustraction : ${number1} - ${number2} = ${number1 - number2}`;
-        console.log(soustraction);
-        archif = soustraction;
-    };
-
-    const Multiplication = () => {
-        let multiplication = `Multiplication : ${number1} * ${number2} = ${number1 * number2}`;
-        console.log(multiplication);
-        archif = multiplication;
-    };
-
-    const Division = () => {
-        if (number2 !== 0) {
-            let division = `Division : ${number1} / ${number2} = ${number1 / number2}`;
-            console.log(division);
-            archif = division;
-        } else {
-            console.log(' Impossible de diviser par 0');
-        }
-    };
-
-    const Puissance = () => {
-        let puissance = `La Puissance : ${number1} ^ ${number2} = ${number1 ** number2}`;
-        console.log(puissance);
-        archif = puissance;
-    };
-
-    const Racine_caree = () => {
-        let racin = `La racine carrée de ${number1} = ${Math.sqrt(number1)}`;
-        console.log(racin);
-        archif = racin;
-    };
-
-    const Factorielle = () => {
-        let f = 1;
-        for (let i = 1; i <= number1; ++i) {
-            f *= i;
-        }
-        let result = `Factorielle de ${number1} = ${f}`;
-        console.log(result);
-        archif = result;
-    };
 
     // ──────────────────────────────
     // SWITCH CASE
     // ──────────────────────────────
-    switch (opt) {
-        case '1':
-            Addition();
+    switch (menu) {
+        case 1:
+            Addition(number1, number2);
             break;
-        case '2':
-            Soustraction();
+        case 2:
+            Soustraction(number1, number2);
             break;
-        case '3':
-            Multiplication();
+        case 3:
+            Multiplication(number1, number2);
             break;
-        case '4':
-            Division();
+        case 4:
+            Division(number1, number2);
             break;
-        case '5':
-            Puissance();
+        case 5:
+            Puissance(number1, number2);
             break;
-        case '6':
-            Racine_caree();
+        case 6:
+            Racine_caree(number1);
             break;
-        case '7':
-            Factorielle();
+        case 7:
+            Factorielle(number1);
             break;
-        default:
-            console.log('this operateur not defound');
-            continue;
     }
 
     // Store calculation in history
-    if (archif) history.push(archif);
-} 
+    history.push(archif);
+
+} while (menu !== 0);
